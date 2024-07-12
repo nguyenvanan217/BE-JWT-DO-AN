@@ -1,0 +1,4 @@
+/nodemodule
+/vendor
+.idea/
+.env/
