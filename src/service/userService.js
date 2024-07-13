@@ -1,6 +1,7 @@
 import mysql from "mysql2/promise";
 import bcrypt from "bcryptjs";
 import Bluebird from "bluebird";
+import db from "../models/index.js";
 // Create the connection to database
 
 const salt = bcrypt.genSaltSync(10);
@@ -11,17 +12,12 @@ const hashPassword = (userPassword) => {
 };
 const createNewUser = async (email, password, username) => {
   let hashPass = hashPassword(password);
-  const connection = await mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    database: "jwt",
-    Promise: Bluebird,
-  });
   try {
-    const [rows, fields] = await connection.execute(
-      "INSERT INTO users (email, password, username) VALUES (?, ?, ?);",
-      [email, hashPass, username]
-    );
+    await db.User.create({
+        username: username,
+        email: email,
+        password: hashPass,
+      });
   } catch (error) {
     console.log(">>>>>>>>>>>>>>>>>>>>error: ", error);
   }
@@ -35,7 +31,7 @@ const getUserList = async () => {
     Promise: Bluebird,
   });
   try {
-    const [rows, fields] = await connection.execute("Select * From users");
+    const [rows, fields] = await connection.execute("Select * From user");
     return rows;
   } catch (err) {
     console.log(">>>>>>>>>>>>>>>>>>>>err: ", err);
@@ -50,7 +46,7 @@ const deleteUser = async (id) => {
   });
   try {
     const [rows, fields] = await connection.execute(
-      "DELETE FROM users WHERE id = ?",
+      "DELETE FROM user WHERE id = ?",
       [id]
     );
     return rows;
@@ -67,7 +63,7 @@ const getUserById = async (id) => {
   });
   try {
     const [rows, fields] = await connection.execute(
-      "select * FROM users WHERE id = ?",
+      "select * FROM user WHERE id = ?",
       [id]
     );
     return rows;
@@ -84,7 +80,7 @@ const updateUserInfor = async (id, email, username) => {
   });
   try {
     const [rows, fields] = await connection.execute(
-      "UPDATE users SET email = ?, username = ? WHERE id = ?",
+      "UPDATE user SET email = ?, username = ? WHERE id = ?",
       [email, username, id]
     );
     return rows;

@@ -12,7 +12,7 @@ module.exports = {
      * }], {});
      */
     await queryInterface.bulkInsert(
-      "Users",
+      "User",
       [
         {
           email: "John Doe",
@@ -25,10 +25,10 @@ module.exports = {
           username: "fake12",
         },
         {
-          email: 'John Doe3',
-          password: '123',
-          username: 'fake13',
-        }
+          email: "John Doe3",
+          password: "123",
+          username: "fake13",
+        },
       ],
       {}
     );
