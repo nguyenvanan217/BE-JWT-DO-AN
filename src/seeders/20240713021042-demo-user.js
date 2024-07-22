@@ -1,5 +1,5 @@
 "use strict";
-
+// "logging": false
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     /**
