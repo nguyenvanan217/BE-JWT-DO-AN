@@ -1,8 +1,10 @@
+import { where } from "sequelize/lib/sequelize";
 import db from "../models/index.js";
-import bcrypt from "bcryptjs";
+import bcrypt, { hash } from "bcryptjs";
+import { Op } from "sequelize";
 const salt = bcrypt.genSaltSync(10);
 // người dùng nhập vào tham số userPassword
-const hashPassword = (userPassword) => {
+const hashUserPassword = (userPassword) => {
   let hashPassword = bcrypt.hashSync(userPassword, salt);
   return hashPassword;
 };
@@ -44,8 +46,9 @@ const registerNewUser = async (rawUserData) => {
         EC: "1",
       };
     }
+
     //hashPassword
-    let hashPassword = hashPassword(rawUserData.password);
+    let hashPassword = hashUserPassword(rawUserData.password);
     //create new user
     await db.User.create({
       email: rawUserData.email,
@@ -65,6 +68,54 @@ const registerNewUser = async (rawUserData) => {
     };
   }
 };
+const checkPassword = (inputPassword, hashPassword) => {
+  return bcrypt.compareSync(inputPassword, hashPassword);
+};
+const handleUserLogin = async (rawData) => {
+  try {
+    let user = await db.User.findOne({
+      where: {
+        [Op.or]: [{ email: rawData.valueLogin }, { phone: rawData.valueLogin }],
+      },
+    });
+    if (user) {
+      console.log(">>>>>>>>found user with email/phone: ");
+      let isCorrectPassword = checkPassword(rawData.password, user.password);
+      if (isCorrectPassword === true) {
+        return {
+          EM: "ok!",
+          EC: 0,
+          DT: "",
+        };
+      }
+    }
+    console.log(">>>>>>>>>Input user with email/phone: ",rawData.valueLogin,"password: ",rawData.password);
+    return {
+      EM: "Your email/phone number or password is incorrect",
+      EC: 1,
+      DT: "",
+    };
+    // console.log(">>>>>>>>>check user js", user.get({ plain: true }));
+    // console.log(">>>>>>>>>check user sequelize", user);
+
+    // let isCorrectPassword = checkPassword;
+    // if (isPhoneExist === false) {
+    //   return {
+    //     EM: "The phone is already exist",
+    //     EC: "1",
+    //     DT: "",
+    //   };
+    // }
+  } catch (error) {
+    console.log(error);
+    return {
+      EM: "Something wrongs in service....",
+      EC: "-2",
+    };
+  }
+};
 module.exports = {
   registerNewUser,
+  handleUserLogin,
 };
+

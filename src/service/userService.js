@@ -13,7 +13,6 @@ const hashPassword = (userPassword) => {
 };
 const createNewUser = async (email, password, username) => {
   let hashPass = hashPassword(password);
-  console.log(hashPass);
   try {
     await db.User.create({
       username: username,

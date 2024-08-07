@@ -8,10 +8,6 @@ const testApi = async (req, res) => {
 
 const handleRegister = async (req, res) => {
   try {
-    // email,
-    // phone,
-    // username,
-    // password,
     if (!req.body.email || !req.body.phone || !req.body.password) {
       return res.status(200).json({
         EM: "Missing required parameters", //ERROR MESS
@@ -24,7 +20,7 @@ const handleRegister = async (req, res) => {
         EM: "Your password must have more than 3 letters", //ERROR MESS
         EC: "1", //ERROR CODE
         DT: "", //DATA
-      });  
+      });
     }
     //service: create user
     let data = await loginRegisterService.registerNewUser(req.body);
@@ -41,7 +37,24 @@ const handleRegister = async (req, res) => {
     });
   }
 };
+const handleLogin = async (req, res) => {
+  try {
+    let data = await loginRegisterService.handleUserLogin(req.body);
+    return res.status(200).json({
+      EM: data.EM, //ERROR MESS
+      EC: data.EC, //ERROR CODE
+      DT: data.DT, //DATA
+    });
+  } catch (error) {
+    return res.status(500).json({
+      EM: "error from server", //ERROR MESS
+      EC: "-1", //ERROR CODE
+      DT: "", //DATA
+    });
+  }
+};
 module.exports = {
   testApi,
   handleRegister,
+  handleLogin,
 };
