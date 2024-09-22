@@ -10,6 +10,7 @@ const handleUserPage = async (req, res) => {
 
 const handleCreateUser = (req, res) => {
   const { email, password, username } = req.body;
+  console.log('check>>>>>', req.body);
   userService.createNewUser(email, password, username);
   return res.redirect("/user");
 };
@@ -22,9 +23,6 @@ const getUpdateUserPage = async (req, res) => {
   let user = await userService.getUserById(id);
   let userData = {};
   userData = user;
-  // if (user && user.length > 0) {
-  //   userData = user[0];
-  // }
   return res.render("user-update.ejs", { userData });
 };
 const handleUpdateUser = async (req, res) => {

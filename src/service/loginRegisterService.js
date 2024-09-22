@@ -79,7 +79,6 @@ const handleUserLogin = async (rawData) => {
       },
     });
     if (user) {
-      console.log(">>>>>>>>found user with email/phone: ");
       let isCorrectPassword = checkPassword(rawData.password, user.password);
       if (isCorrectPassword === true) {
         return {
@@ -89,7 +88,6 @@ const handleUserLogin = async (rawData) => {
         };
       }
     }
-    console.log(">>>>>>>>>Input user with email/phone: ",rawData.valueLogin,"password: ",rawData.password);
     return {
       EM: "Your email/phone number or password is incorrect",
       EC: 1,
@@ -117,5 +115,8 @@ const handleUserLogin = async (rawData) => {
 module.exports = {
   registerNewUser,
   handleUserLogin,
+  checkEmailExist,
+  hashUserPassword,
+  checkPhoneExist,
 };
 

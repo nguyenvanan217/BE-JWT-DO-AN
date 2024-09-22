@@ -1,24 +1,12 @@
 import userApiService from "../service/userApiService";
 const readFunc = async (req, res) => {
   try {
-    if (req.query.page && req.query.limit) {
-      console.log(">>>>>>>>>check", req.query);
-      let page = req.query.page;
-      let limit = req.query.limit;
-      let data = await userApiService.getUserWidthPagination(+page, +limit);
-      return res.status(200).json({
-        EM: data.EM, //ERROR MESS
-        EC: data.EC, //ERROR CODE
-        DT: data.DT, //DATA
-      });
-    } else {
       let data = await userApiService.getAllUser();
       return res.status(200).json({
-        EM: data.EM, //ERROR MESS
-        EC: data.EC, //ERROR CODE
-        DT: data.DT, //DATA
+        EM: data.EM,
+        EC: data.EC,
+        DT: data.DT, 
       });
-    }
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -28,8 +16,14 @@ const readFunc = async (req, res) => {
     });
   }
 };
-const createFunc = (req, res) => {
+const createFunc = async (req, res) => {
   try {
+    let data = await userApiService.createUser(req.body);
+    return res.status(200).json({
+      EM: data.EM, 
+      EC: data.EC, 
+      DT: data.DT,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -39,8 +33,14 @@ const createFunc = (req, res) => {
     });
   }
 };
-const updateFunc = (req, res) => {
+const updateFunc = async (req, res) => {
   try {
+    let data = await userApiService.updateUser(req.body)
+    return res.status(200).json({
+      EM: data.EM,
+      EC: data.EC,
+      DT: data.DT,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -50,8 +50,14 @@ const updateFunc = (req, res) => {
     });
   }
 };
-const deleteFunc = (req, res) => {
+const deleteFunc = async (req, res) => {
   try {
+    let data = await userApiService.deleteUser(req.body.id)
+    return res.status(200).json({
+      EM: data.EM, 
+      EC: data.EC, 
+      DT: data.DT, 
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({

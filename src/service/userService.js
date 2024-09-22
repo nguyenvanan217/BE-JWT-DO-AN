@@ -1,8 +1,6 @@
-import mysql from "mysql2/promise";
 import bcrypt from "bcryptjs";
 // import Bluebird from "bluebird";
 import db from "../models/index.js";
-import { where } from "sequelize/lib/sequelize";
 // Create the connection to database
 
 const salt = bcrypt.genSaltSync(10);
@@ -26,13 +24,13 @@ const createNewUser = async (email, password, username) => {
 
 const getUserList = async () => {
   //test relationships
-  let newUser = await db.User.findOne({
-    where: { id: 1 },
-    attributes: ["id", "username", "email"],
-    include: { model: db.Group, attributes: ["name", "description"] },
-    raw: true,
-    nest: true,
-  });
+  // let newUser = await db.User.findOne({
+  //   where: { id: 1 },
+  //   attributes: ["id", "username", "email"],
+  //   include: { model: db.Group, attributes: ["name", "description"] },
+  //   raw: true,
+  //   nest: true,
+  // });
   // console.log(">>>>>>>>>>>>>>>>>>>>new User: ", newUser);
 
   // let roles = await db.Group.findOne({
@@ -41,11 +39,11 @@ const getUserList = async () => {
   //   raw: true,
   //   nest: true,
   // });
-  let r = await db.Role.findAll({
-    include: { model: db.Group, where: { id: 1 } }, // lấy thằng mọi thằng role mô có điều kiện ở Group có id là 1
-    raw: true,
-    nest: true,
-  });
+  // let r = await db.Role.findAll({
+  //   include: { model: db.Group, where: { id: 1 } }, // lấy thằng mọi thằng role mô có điều kiện ở Group có id là 1
+  //   raw: true,
+  //   nest: true,
+  // });
   // console.log(">>>>>>>>>>>>>>>>>>>>new User: ", newUser);
   // console.log(">>>>>>>>>>>>>>>>>>>>new Roles: ", r);
   let users = [];
