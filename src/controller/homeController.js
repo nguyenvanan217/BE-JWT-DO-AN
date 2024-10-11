@@ -1,3 +1,4 @@
+//server render back end
 import userService from "../service/userService.js";
 const handleHelloWorld = (req, res) => {
   return res.render("home.ejs");

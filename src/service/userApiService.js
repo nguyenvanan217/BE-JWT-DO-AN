@@ -8,8 +8,8 @@ const getAllUser = async () => {
   try {
     let users = await db.User.findAll({
       attributes: ["id", "username", "email", "phone", "sex", "address"],
-      include: { model: db.Group, attributes: ["name", "description", "id"] },
-      order: [["id", "ASC"]],
+      include: { model: db.Group, attributes: ["name", "description", "id"] }, //join 2 bảng với nhau user với group , lấy ra dữ liệu kết hợp cả 2 bảng
+      order: [["id", "ASC"]], // tăng dần theo id
     });
     if (users) {
       return {
@@ -50,7 +50,7 @@ const createUser = async (data) => {
       return {
         EM: "The phone is already exist !",
         EC: "1",
-        DT: "phone",
+        DT: "phone", 
       };
     }
     //hash user password

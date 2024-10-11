@@ -8,6 +8,7 @@ const hashUserPassword = (userPassword) => {
   let hashPassword = bcrypt.hashSync(userPassword, salt);
   return hashPassword;
 };
+//userEmail do rawUserData.email truyền vào
 const checkEmailExist = async (userEmail) => {
   let user = await db.User.findOne({
     where: {
@@ -50,12 +51,12 @@ const registerNewUser = async (rawUserData) => {
     //hashPassword
     let hashPassword = hashUserPassword(rawUserData.password);
     //create new user
-    await db.User.create({
-      email: rawUserData.email,
-      username: rawUserData.username,
-      password: hashPassword,
-      phone: rawUserData.phone,
-    });
+      await db.User.create({
+        email: rawUserData.email,
+        username: rawUserData.username,
+        password: hashPassword,
+        phone: rawUserData.phone,
+      });
     return {
       EM: "A user is created successfully ",
       EC: 0,
@@ -72,6 +73,7 @@ const checkPassword = (inputPassword, hashPassword) => {
   return bcrypt.compareSync(inputPassword, hashPassword);
 };
 const handleUserLogin = async (rawData) => {
+  // console.log('>>>>>>>>>rawData',rawData);
   try {
     let user = await db.User.findOne({
       where: {
