@@ -1,7 +1,10 @@
+require("dotenv").config();
 import { where } from "sequelize/lib/sequelize";
 import db from "../models/index.js";
 import bcrypt, { hash } from "bcryptjs";
 import { Op } from "sequelize";
+import { getGroupWithRoles } from "../service/JWTService.js";
+import { createJWT } from "../middleware/JWTAction.js";
 const salt = bcrypt.genSaltSync(10);
 // người dùng nhập vào tham số userPassword
 const hashUserPassword = (userPassword) => {
@@ -51,12 +54,13 @@ const registerNewUser = async (rawUserData) => {
     //hashPassword
     let hashPassword = hashUserPassword(rawUserData.password);
     //create new user
-      await db.User.create({
-        email: rawUserData.email,
-        username: rawUserData.username,
-        password: hashPassword,
-        phone: rawUserData.phone,
-      });
+    await db.User.create({
+      email: rawUserData.email,
+      username: rawUserData.username,
+      password: hashPassword,
+      phone: rawUserData.phone,
+      groupId: 4,
+    });
     return {
       EM: "A user is created successfully ",
       EC: 0,
@@ -83,10 +87,22 @@ const handleUserLogin = async (rawData) => {
     if (user) {
       let isCorrectPassword = checkPassword(rawData.password, user.password);
       if (isCorrectPassword === true) {
+        // let token
+        //test roles:
+        let groupWithRoles = await getGroupWithRoles(user);
+        let payload = {
+          email: user.email,
+          groupWithRoles,
+          expiresIn: process.env.JWT_EXPIRES_IN,
+        };
+        let token = createJWT(payload);
         return {
           EM: "ok!",
           EC: 0,
-          DT: "",
+          DT: {
+            access_token: token,
+            groupWithRoles,
+          },
         };
       }
     }
@@ -95,17 +111,6 @@ const handleUserLogin = async (rawData) => {
       EC: 1,
       DT: "",
     };
-    // console.log(">>>>>>>>>check user js", user.get({ plain: true }));
-    // console.log(">>>>>>>>>check user sequelize", user);
-
-    // let isCorrectPassword = checkPassword;
-    // if (isPhoneExist === false) {
-    //   return {
-    //     EM: "The phone is already exist",
-    //     EC: "1",
-    //     DT: "",
-    //   };
-    // }
   } catch (error) {
     console.log(error);
     return {
@@ -121,4 +126,3 @@ module.exports = {
   hashUserPassword,
   checkPhoneExist,
 };
-

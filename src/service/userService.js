@@ -40,7 +40,7 @@ const getUserList = async () => {
   //   nest: true,
   // });
   // let r = await db.Role.findAll({
-  //   include: { model: db.Group, where: { id: 1 } }, // lấy thằng mọi thằng role mô có điều kiện ở Group có id là 1
+  //   include: { model: db.Group, where: { id: 1 } }, // lấy thằng mọi thằng role nào có điều kiện ở Group có id là 1
   //   raw: true,
   //   nest: true,
   // });
