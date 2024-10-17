@@ -12,7 +12,7 @@ const handleUserPage = async (req, res) => {
 
 const handleCreateUser = (req, res) => {
   const { email, password, username } = req.body;
-  console.log('check>>>>>', req.body);
+  // console.log('check>>>>>', req.body);
   userService.createNewUser(email, password, username);
   return res.redirect("/user");
 };

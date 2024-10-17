@@ -24,12 +24,13 @@ const verifyToken = (token) => {
 const checkUserJWT = (req, res, next) => {
   if (nonSecurePaths.includes(req.path)) return next();
   let cookies = req.cookies;
-  console.log("cookies", cookies);
+  // console.log("cookies", cookies);
   if (cookies && cookies.jwt) {
     let token = cookies.jwt;
     let decoded = verifyToken(token);
     if (decoded) {
       req.user = decoded;
+      req.token = token
       next();
     } else {
       return res.status(401).json({
@@ -45,10 +46,10 @@ const checkUserJWT = (req, res, next) => {
       EM: "Not authenticated the user",
     });
   }
-  console.log(cookies);
+  // console.log(cookies);
 };
 const checkUserPermission = (req, res, next) => {
-  if (nonSecurePaths.includes(req.path)) return next();
+  if (nonSecurePaths.includes(req.path)|| req.path === '/account') return next();
   if (req.user) {
     let email = req.user.email;
     let roles = req.user.groupWithRoles.Roles;

@@ -1,14 +1,14 @@
 import userApiService from "../service/userApiService";
 const readFunc = async (req, res) => {
   try {
-      // console.log('Cookies', req.cookies);
-       console.log('req.user', req.user);
-      let data = await userApiService.getAllUser();
-      return res.status(200).json({
-        EM: data.EM,
-        EC: data.EC,
-        DT: data.DT, 
-      });
+    // console.log('Cookies', req.cookies);
+    //  console.log('req.user', req.user);
+    let data = await userApiService.getAllUser();
+    return res.status(200).json({
+      EM: data.EM,
+      EC: data.EC,
+      DT: data.DT,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -22,8 +22,8 @@ const createFunc = async (req, res) => {
   try {
     let data = await userApiService.createUser(req.body);
     return res.status(200).json({
-      EM: data.EM, 
-      EC: data.EC, 
+      EM: data.EM,
+      EC: data.EC,
       DT: data.DT,
     });
   } catch (error) {
@@ -37,7 +37,7 @@ const createFunc = async (req, res) => {
 };
 const updateFunc = async (req, res) => {
   try {
-    let data = await userApiService.updateUser(req.body)
+    let data = await userApiService.updateUser(req.body);
     return res.status(200).json({
       EM: data.EM,
       EC: data.EC,
@@ -55,11 +55,11 @@ const updateFunc = async (req, res) => {
 const deleteFunc = async (req, res) => {
   try {
     // console.log('req', req.body);
-    let data = await userApiService.deleteUser(req.body.id)
+    let data = await userApiService.deleteUser(req.body.id);
     return res.status(200).json({
-      EM: data.EM, 
-      EC: data.EC, 
-      DT: data.DT, 
+      EM: data.EM,
+      EC: data.EC,
+      DT: data.DT,
     });
   } catch (error) {
     console.log(error);
@@ -70,9 +70,22 @@ const deleteFunc = async (req, res) => {
     });
   }
 };
+const getUserAccount = async (req, res) => {
+  return res.status(200).json({
+    EM: "getUserAccount ok",
+    EC: 0,
+    DT: {
+      access_token: req.token,
+      groupWithRoles: req.user.groupWithRoles,
+      email: req.user.email,
+      username: req.user.username,
+    },
+  });
+};
 module.exports = {
   readFunc,
   createFunc,
   updateFunc,
   deleteFunc,
+  getUserAccount,
 };
