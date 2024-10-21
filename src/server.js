@@ -27,6 +27,7 @@ app.use(cookieParser())
 // init all web routes
 initWebRoutes(app);
 initAPIRoutes(app);
+
 app.use((req, res) => {
   //trong express use được coi là middleware, chạy từ trên xuống dưới, thằng trên trả ra kết quả rồi thì sẽ không chạy thằng dưới nữa
   return res.send("404 NOT FOUND");
