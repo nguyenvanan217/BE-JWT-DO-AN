@@ -66,7 +66,7 @@ const registerNewUser = async (rawUserData) => {
       EC: 0,
     };
   } catch (error) {
-    console.log("e");
+    console.log("error",error);
     return {
       EM: "Something wrongs in service....",
       EC: "-2",

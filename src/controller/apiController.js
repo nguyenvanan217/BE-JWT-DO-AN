@@ -63,7 +63,7 @@ const handleLogin = async (req, res) => {
 };
 const handleLogout = (req, res) => {
   try {
-    console.log("Request body:", req.body); // Ghi log để kiểm tra request
+    // console.log("Request body:", req.body); // Ghi log để kiểm tra request
     res.clearCookie("jwt");
     return res.status(200).json({
       EM: "Clear Cookie done",

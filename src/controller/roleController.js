@@ -4,7 +4,7 @@ const readFunc = async (req, res) => {
   try {
     // console.log('Cookies', req.cookies);
     //  console.log('req.user', req.user);
-    let data = await userApiService.getAllUser();
+    let data = await roleApiService.getAllRoles();
     return res.status(200).json({
       EM: data.EM,
       EC: data.EC,
@@ -20,10 +20,10 @@ const readFunc = async (req, res) => {
   }
 };
 const createFunc = async (req, res) => {
-    console.log('Request body:', req.body);
+    // console.log('Request body:', req.body);
   try {
     let data = await roleApiService.createNewRoles(req.body);
-    console.log('check data',data);
+    // console.log('check data',data);
     return res.status(200).json({
       EM: data.EM,
       EC: data.EC,
@@ -58,7 +58,7 @@ const updateFunc = async (req, res) => {
 const deleteFunc = async (req, res) => {
   try {
     // console.log('req', req.body);
-    let data = await userApiService.deleteUser(req.body.id);
+    let data = await roleApiService.deleteRole(req.body.id);
     return res.status(200).json({
       EM: data.EM,
       EC: data.EC,
