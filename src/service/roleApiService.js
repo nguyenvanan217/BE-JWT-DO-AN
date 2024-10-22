@@ -1,3 +1,4 @@
+import { where } from "sequelize/lib/sequelize";
 import db from "../models/index";
 const createNewRoles = async (roles) => {
   try {
@@ -83,8 +84,41 @@ const deleteRole = async (id) => {
     };
   }
 };
+const getRoleByGroup = async (id) => {
+  try {
+    if (!id) {
+      return {
+        EM: "Not found any roles!",
+        EC: 0,
+        DT: [],
+      };
+    }
+    let roles = await db.Group.findOne({
+      where: { id: id },
+      attributes: ["id", "name", "description"],
+      include: {
+        model: db.Role,
+        attributes: ["id", "url", "description"],
+        through: { attributes: [] },
+      },
+    });
+    return {
+      EM: "Get Role by group Successeds !",
+      EC: 0,
+      DT: roles,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      EM: "Error from service !",
+      EC: 1,
+      DT: [],
+    };
+  }
+};
 module.exports = {
   createNewRoles,
   getAllRoles,
   deleteRole,
+  getRoleByGroup,
 };

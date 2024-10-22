@@ -62,7 +62,7 @@ const checkUserPermission = (req, res, next) => {
   if (nonSecurePaths.includes(req.path) || req.path === "/account")
     return next();
 
-  if (nonSecurePaths.some(path => req.path.includes(path))) return next();
+  if (nonSecurePaths.some((path) => req.path.includes(path))) return next();
   if (req.user) {
     let email = req.user.email;
     let roles = req.user.groupWithRoles.Roles;
@@ -74,7 +74,9 @@ const checkUserPermission = (req, res, next) => {
         EM: ``,
       });
     }
-    let canAccess = roles.some((item) => item.url === currentUrl);
+    let canAccess = roles.some(
+      (item) => item.url === currentUrl || currentUrl.includes(item.url)
+    );
     if (canAccess) {
       next();
     } else {
