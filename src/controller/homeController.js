@@ -1,8 +1,8 @@
 //server render back end
 import userService from "../service/userService.js";
-const handleHelloWorld = (req, res) => {
-  return res.render("home.ejs");
-};
+// const handleHelloWorld = (req, res) => {
+//   return res.render("home.ejs");
+// };
 
 const handleUserPage = async (req, res) => {
   // console.log('Cookies: ', req.cookies)
@@ -11,6 +11,11 @@ const handleUserPage = async (req, res) => {
 };
 
 const handleCreateUser = (req, res) => {
+  // destructuring assignment
+  //   const email = req.body.email;
+  // const password = req.body.password;
+  // const username = req.body.username;
+
   const { email, password, username } = req.body;
   // console.log('check>>>>>', req.body);
   userService.createNewUser(email, password, username);
@@ -18,6 +23,7 @@ const handleCreateUser = (req, res) => {
 };
 const handleDeleteUser = async (req, res) => {
   await userService.deleteUser(req.params.id);
+  // console.log("req.params.id",req.params.id)
   return res.redirect("/user");
 };
 const getUpdateUserPage = async (req, res) => {
@@ -35,10 +41,10 @@ const handleUpdateUser = async (req, res) => {
   return res.redirect("/user");
 };
 module.exports = {
-  handleHelloWorld,
+  // handleHelloWorld,
   handleUserPage,
   handleCreateUser,
-  handleDeleteUser, 
+  handleDeleteUser,
   getUpdateUserPage,
   handleUpdateUser,
 };
