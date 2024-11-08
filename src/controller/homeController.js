@@ -1,13 +1,13 @@
 //server render back end
 import userService from "../service/userService.js";
+import multer from "multer";
 // const handleHelloWorld = (req, res) => {
 //   return res.render("home.ejs");
 // };
 
 const handleUserPage = async (req, res) => {
-  // console.log('Cookies: ', req.cookies)
-  let userList = await userService.getUserList();
-  return res.render("user.ejs", { userList });
+  let userList = await userService.getUserList(); // Lấy dữ liệu user từ service
+  return res.render("user.ejs", { userList }); // Truyền vào view
 };
 
 const handleCreateUser = (req, res) => {
@@ -40,6 +40,57 @@ const handleUpdateUser = async (req, res) => {
   await userService.updateUserInfor(id, email, username);
   return res.redirect("/user");
 };
+
+/// upload file
+
+let getUploadFilePage = async (req, res) => {
+  return res.render("uploadFile.ejs");
+};
+
+let handleUploadFile = async (req, res) => {
+  if (req.fileValidationError) {
+    return res.send(`
+      <h3 style="color: red;">${req.fileValidationError}</h3>
+      <hr/>
+      <a href="/upload" style="font-size: 18px;">Quay lại trang Upload</a>
+    `);
+  } else if (!req.file) {
+    return res.send(`
+      <h3 style="color: red;">Vui lòng chọn ảnh để tải lên</h3>
+      <hr/>
+      <a href="/upload" style="font-size: 18px;">Quay lại trang Upload</a>
+    `);
+  }
+
+  // Hiển thị ảnh đã tải lên nếu có
+  res.send(
+    `<h1 style="color: green;">Chúc mừng bạn đã tải thành công lên ảnh này ! <br /> Ảnh sẽ được lưu vào trong Server:</h1> <hr/><img src="/images/${req.file.filename}" width="500"> <a href="/upload" style="font-size: 18px;">Quay lại trang Upload</a>`
+  );
+};
+
+let handleUploadMultipleFiles = async (req, res) => {
+  if (req.fileValidationError) {
+    return res.send(req.fileValidationError);
+  } else if (!req.files) {
+    return res.send(`
+      <h1 style="color: red;">Vui lòng chọn ảnh để tải lên</h1>
+      <hr/>
+      <a href="/upload" style="font-size: 18px;">Quay lại trang Upload</a>
+    `);
+  }
+
+  let result = "Bạn đã tải lên các ảnh sau: <hr />";
+  const files = req.files;
+  let index, len;
+
+  // Hiển thị tất cả ảnh đã tải lên
+  for (index = 0, len = files.length; index < len; ++index) {
+    result += `<img src="/image/${files[index].filename}" width="300" style="margin-right: 20px;">`;
+  }
+  result += '<hr/><a href="/upload">Tải lên thêm ảnh</a>';
+  res.send(result);
+};
+
 module.exports = {
   // handleHelloWorld,
   handleUserPage,
@@ -47,4 +98,7 @@ module.exports = {
   handleDeleteUser,
   getUpdateUserPage,
   handleUpdateUser,
+  getUploadFilePage,
+  handleUploadFile,
+  handleUploadMultipleFiles,
 };

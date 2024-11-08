@@ -36,7 +36,7 @@ const checkUserJWT = (req, res, next) => {
   let tokenFromHeader = extractToken(req);
   // console.log("cookies", cookies);
   if ((cookies && cookies.jwt) || tokenFromHeader) {
-    let token = cookies && cookies.jwt ? cookies.jwt : tokenFromHeader;
+    let token = cookies && cookies.jwt ? cookies.jwt : tokenFromHeader; ///Lấy JWT từ cookie nếu nó tồn tại, nếu không thì lấy từ header.
     let decoded = verifyToken(token);
     if (decoded) {
       req.user = decoded;
@@ -63,7 +63,7 @@ const checkUserPermission = (req, res, next) => {
     return next();
 
   if (nonSecurePaths.some((path) => req.path.includes(path))) return next();
-  if (req.user) {
+  if (req.user) {  // nếu người dùng đã đăng nhập
     let email = req.user.email;
     let roles = req.user.groupWithRoles.Roles;
     let currentUrl = req.path;
@@ -75,7 +75,7 @@ const checkUserPermission = (req, res, next) => {
       });
     }
     let canAccess = roles.some(
-      (item) => item.url === currentUrl || currentUrl.includes(item.url)
+      (item) => item.url === currentUrl || currentUrl.includes(item.url) //currentUrl.includes(item.url) có chứa chuỗi con ko vd: "/admin/users/edit/1".includes("/admin/users") // true
     );
     if (canAccess) {
       next();

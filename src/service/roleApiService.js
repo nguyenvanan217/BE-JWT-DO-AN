@@ -14,7 +14,7 @@ const createNewRoles = async (roles) => {
     // !currentRoles.some(({ url: url2 }) => url1 === url2));
     const persists = roles.filter(
       ({ url: url1 }) => !currentRoles.some(({ url: url2 }) => url1 === url2)
-    );
+    ); 
     if (persists.length === 0) {
       return {
         EM: "Nothing to create...",
@@ -120,7 +120,7 @@ const assignRoleToGroup = async (data) => {
   try {
     //data = {groupId: 4, groupRoles: [{},{}]}
     await db.Group_Role.destroy({
-      where: {groupId: +data.groupId}
+      where: {groupId: +data.groupId}     // xóa những bảng ghi co group tương ứng
     })
     await db.Group_Role.bulkCreate(data.groupRoles)
     return {
