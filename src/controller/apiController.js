@@ -5,7 +5,6 @@ const testApi = async (req, res) => {
     data: "test API",
   });
 };
-
 const handleRegister = async (req, res) => {
   try {
     if (!req.body.email || !req.body.phone || !req.body.password) {

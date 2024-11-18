@@ -39,7 +39,7 @@ const checkUserJWT = (req, res, next) => {
     let token = cookies && cookies.jwt ? cookies.jwt : tokenFromHeader; ///Lấy JWT từ cookie nếu nó tồn tại, nếu không thì lấy từ header.
     let decoded = verifyToken(token);
     if (decoded) {
-      req.user = decoded;
+      req.user = decoded; // chuỗi ở payload file loginregister
       req.token = token;
       next();
     } else {

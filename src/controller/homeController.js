@@ -11,11 +11,11 @@ const handleUserPage = async (req, res) => {
 };
 
 const handleCreateUser = (req, res) => {
-  // destructuring assignment
   //   const email = req.body.email;
   // const password = req.body.password;
   // const username = req.body.username;
-
+  
+  // destructuring assignment
   const { email, password, username } = req.body;
   // console.log('check>>>>>', req.body);
   userService.createNewUser(email, password, username);

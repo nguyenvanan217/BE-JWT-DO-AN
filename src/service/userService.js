@@ -57,7 +57,7 @@ const deleteUser = async (userId) => {
 const getUserById = async (id) => {
   let user = {};
   // {
-  //   id: 1,
+  //   id: 54,
   //   email: "nguyen.an@example.com",
   //   username: "nguyenan"
   // }
