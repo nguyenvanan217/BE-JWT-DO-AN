@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.belongsTo(models.Group);
       User.belongsToMany(models.Project, { through: "Project_User" });
-    }
+    } 
   }
   User.init(
     {
